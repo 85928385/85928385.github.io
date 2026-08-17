@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人主页</title>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(17, 24, 39, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #020617, #172554);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            padding: 4px;
+            margin-bottom: 20px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .avatar:hover {
+            transform: rotate(360deg);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section h2 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h2::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 18px;
+            background: var(--primary-color);
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+
+        .about-text {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #cbd5e1;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .tag:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .links {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            display: inline-block;
+            text-align: center;
+            padding: 12px 0;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #fff;
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            .card { padding: 30px 20px; }
+            .links { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <header class="profile-header">
+            <!-- 替换为你自己的头像链接，可以使用 GitHub 头像 (例如: https://github.com/你的ID.png) -->
+            <img src="https://avatars.githubusercontent.com/github" alt="Avatar" class="avatar">
+            <h1>Hi, 我是 [你的名字]</h1>
+            <p class="subtitle">Tech Enthusiast / Developer / Geek</p>
+        </header>
+
+        <main>
+            <section class="section">
+                <h2>关于我</h2>
+                <p class="about-text">
+                    热爱折腾与探索的技术爱好者。热衷于构建高效的后端服务、研究网络路由拓扑，以及在家庭实验室（Homelab）中部署各种有趣的服务。信奉开源精神，喜欢用代码解决实际问题。
+                </p>
+            </section>
+
+            <section class="section">
+                <h2>折腾领域</h2>
+                <div class="tags">
+                    <span class="tag">Linux / Debian</span>
+                    <span class="tag">Docker 容器化架构</span>
+                    <span class="tag">网络路由与 OSPF</span>
+                    <span class="tag">分布式存储与 NAS</span>
+                    <span class="tag">Web3 / 智能合约</span>
+                    <span class="tag">Nginx / 反向代理</span>
+                </div>
+            </section>
+
+            <section class="links">
+                <!-- 替换为你自己的 GitHub 地址 -->
+                <a href="https://github.com/你的ID" target="_blank" class="btn btn-primary">访问我的 GitHub</a>
+                <!-- 替换为你的博客或其他主页 -->
+                <a href="#" target="_blank" class="btn btn-outline">阅读我的博客</a>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
