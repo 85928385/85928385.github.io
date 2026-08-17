@@ -3,21 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的个人主页</title>
+    <title>Darthz's Repo</title>
+    <!-- FontAwesome for crisp icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #6366f1;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #090d16 100%);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.12);
+            --card-hover-bg: rgba(255, 255, 255, 0.1);
             --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --glass-bg: rgba(17, 24, 39, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-sub: #94a3b8;
+            --accent-glow: #6366f1;
+            --accent-cyan: #38bdf8;
+            --accent-purple: #a855f7;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: var(--font-family);
         }
 
         body {
@@ -25,208 +32,557 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #020617, #172554);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: #090d16;
+            background-image: var(--bg-gradient);
+            background-size: 200% 200%;
+            animation: gradientMove 18s ease infinite;
             color: var(--text-main);
-            padding: 20px;
+            padding: 24px 16px;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        @keyframes gradientBG {
+        @keyframes gradientMove {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 40px;
-            max-width: 600px;
-            width: 100%;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transform: translateY(0);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7);
-        }
-
-        .profile-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .avatar {
-            width: 120px;
-            height: 120px;
+        /* Ambient background glow elements */
+        .ambient-orb {
+            position: absolute;
             border-radius: 50%;
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            padding: 4px;
-            margin-bottom: 20px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
+            filter: blur(100px);
+            opacity: 0.35;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        .avatar:hover {
-            transform: rotate(360deg);
+        .orb-1 {
+            width: 350px;
+            height: 350px;
+            background: #4f46e5;
+            top: 10%;
+            left: 15%;
+            animation: floatOrb1 12s ease-in-out infinite alternate;
         }
 
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            background: linear-gradient(to right, #818cf8, #c084fc);
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: #9333ea;
+            bottom: 10%;
+            right: 15%;
+            animation: floatOrb2 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatOrb1 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(60px, 40px) scale(1.1); }
+        }
+
+        @keyframes floatOrb2 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-50px, -60px) scale(1.15); }
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 680px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 40px 36px;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.6),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 35px 70px -12px rgba(0, 0, 0, 0.7),
+                        inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+        }
+
+        /* Header / Title Section */
+        .header {
+            text-align: center;
+        }
+
+        .title {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 70%, #38bdf8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            text-shadow: 0 10px 20px rgba(99, 102, 241, 0.15);
         }
 
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 16px;
-            letter-spacing: 1px;
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            font-size: 12px;
+            color: #a5b4fc;
+            font-weight: 500;
+            letter-spacing: 0.5px;
         }
 
-        .section {
-            margin-bottom: 25px;
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #22c55e;
+            animation: pulse 2s infinite;
         }
 
-        .section h2 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            color: #e2e8f0;
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        /* Clock & Date Widget Card */
+        .time-widget {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .time-widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.5), transparent);
+        }
+
+        .clock-display {
+            font-size: 48px;
+            font-weight: 700;
+            font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .clock-display span.seconds {
+            font-size: 28px;
+            color: var(--accent-cyan);
+            font-weight: 400;
+            margin-left: 2px;
+        }
+
+        .date-display {
+            font-size: 15px;
+            color: var(--text-sub);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .date-display i {
+            color: var(--accent-cyan);
+        }
+
+        /* Quick Search Bar */
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: rgba(15, 23, 42, 0.7);
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.25);
+        }
+
+        .search-input::placeholder {
+            color: #64748b;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .search-input:focus + .search-icon {
+            color: var(--accent-glow);
+        }
+
+        /* Nav Section / Links Grid */
+        .section-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-sub);
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            color: var(--accent-purple);
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .link-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .link-card:hover {
+            transform: translateY(-3px);
+            background: var(--card-hover-bg);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.4);
+        }
+
+        .link-card:hover::before {
+            opacity: 1;
+        }
+
+        .icon-box {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            flex-shrink: 0;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .link-card:hover .icon-box {
+            transform: scale(1.1);
+        }
+
+        /* Unique Accent Colors for Icons */
+        .icon-github { background: rgba(255, 255, 255, 0.15); color: #fff; }
+        .icon-blog { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); }
+        .icon-server { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
+        .icon-tools { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+        .icon-plus { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+
+        .link-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+        }
+
+        .link-name {
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .link-desc {
+            font-size: 12px;
+            color: var(--text-sub);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .arrow-icon {
+            margin-left: auto;
+            font-size: 12px;
+            color: #64748b;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .link-card:hover .arrow-icon {
+            transform: translateX(3px);
+            color: #fff;
+        }
+
+        /* Footer Section */
+        .footer {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-sub);
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            justify-content: space-between;
             align-items: center;
         }
 
-        .section h2::before {
-            content: '';
-            display: inline-block;
-            width: 4px;
-            height: 18px;
-            background: var(--primary-color);
-            margin-right: 10px;
-            border-radius: 2px;
-        }
-
-        .about-text {
-            color: var(--text-muted);
-            line-height: 1.6;
-            font-size: 15px;
-        }
-
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .tag {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            color: #cbd5e1;
-            transition: all 0.3s ease;
-            cursor: default;
-        }
-
-        .tag:hover {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: var(--primary-color);
-            color: #fff;
-        }
-
-        .links {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .btn {
-            flex: 1;
-            display: inline-block;
-            text-align: center;
-            padding: 12px 0;
-            border-radius: 12px;
+        .footer a {
+            color: var(--text-sub);
             text-decoration: none;
-            font-weight: 600;
-            font-size: 15px;
-            transition: all 0.3s ease;
+            transition: color 0.2s;
         }
 
-        .btn-primary {
-            background: var(--primary-color);
+        .footer a:hover {
             color: #fff;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
 
-        .btn-primary:hover {
-            background: #4f46e5;
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
-        }
+        /* Responsive Layout adjustments */
+        @media (max-width: 580px) {
+            .container {
+                padding: 30px 20px;
+                gap: 24px;
+            }
 
-        .btn-outline {
-            background: transparent;
-            color: #fff;
-            border: 1px solid var(--glass-border);
-        }
+            .title {
+                font-size: 30px;
+            }
 
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
+            .clock-display {
+                font-size: 38px;
+            }
 
-        /* 响应式调整 */
-        @media (max-width: 480px) {
-            .card { padding: 30px 20px; }
-            .links { flex-direction: column; }
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer {
+                flex-direction: column;
+                gap: 8px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <header class="profile-header">
-            <!-- 替换为你自己的头像链接，可以使用 GitHub 头像 (例如: https://github.com/你的ID.png) -->
-            <img src="https://avatars.githubusercontent.com/github" alt="Avatar" class="avatar">
-            <h1>Hi, 我是 [你的名字]</h1>
-            <p class="subtitle">Tech Enthusiast / Developer / Geek</p>
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">Darthz's Repo</h1>
+            <div class="badge">
+                <span class="status-dot"></span>
+                <span>System Online</span>
+            </div>
         </header>
 
+        <!-- Time & Date Widget -->
+        <div class="time-widget">
+            <div class="clock-display" id="clock">00:00<span class="seconds">:00</span></div>
+            <div class="date-display">
+                <i class="fa-regular fa-calendar-days"></i>
+                <span id="date">2026年08月17日 星期一</span>
+            </div>
+        </div>
+
+        <!-- Quick Search Bar -->
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchInput" placeholder="搜索 Google 或输入 URL..." onkeydown="handleSearch(event)">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        </div>
+
+        <!-- Links Grid -->
         <main>
-            <section class="section">
-                <h2>关于我</h2>
-                <p class="about-text">
-                    热爱折腾与探索的技术爱好者。热衷于构建高效的后端服务、研究网络路由拓扑，以及在家庭实验室（Homelab）中部署各种有趣的服务。信奉开源精神，喜欢用代码解决实际问题。
-                </p>
-            </section>
+            <div class="section-title">
+                <i class="fa-solid fa-compass"></i>
+                <span>快捷导航与资源</span>
+            </div>
+            
+            <div class="links-grid">
+                <!-- 链接 1: GitHub -->
+                <a href="https://github.com" target="_blank" class="link-card">
+                    <div class="icon-box icon-github">
+                        <i class="fa-brands fa-github"></i>
+                    </div>
+                    <div class="link-info">
+                        <div class="link-name">GitHub</div>
+                        <div class="link-desc">主页与代码仓库</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                </a>
 
-            <section class="section">
-                <h2>折腾领域</h2>
-                <div class="tags">
-                    <span class="tag">Linux / Debian</span>
-                    <span class="tag">Docker 容器化架构</span>
-                    <span class="tag">网络路由与 OSPF</span>
-                    <span class="tag">分布式存储与 NAS</span>
-                    <span class="tag">Web3 / 智能合约</span>
-                    <span class="tag">Nginx / 反向代理</span>
-                </div>
-            </section>
+                <!-- 链接 2: 个人博客 (示例) -->
+                <a href="#" target="_blank" class="link-card">
+                    <div class="icon-box icon-blog">
+                        <i class="fa-solid fa-newspaper"></i>
+                    </div>
+                    <div class="link-info">
+                        <div class="link-name">技术博客</div>
+                        <div class="link-desc">个人笔记与文章</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                </a>
 
-            <section class="links">
-                <!-- 替换为你自己的 GitHub 地址 -->
-                <a href="https://github.com/你的ID" target="_blank" class="btn btn-primary">访问我的 GitHub</a>
-                <!-- 替换为你的博客或其他主页 -->
-                <a href="#" target="_blank" class="btn btn-outline">阅读我的博客</a>
-            </section>
+                <!-- 链接 3: 服务/NAS (预留示例) -->
+                <a href="#" target="_blank" class="link-card">
+                    <div class="icon-box icon-server">
+                        <i class="fa-solid fa-server"></i>
+                    </div>
+                    <div class="link-info">
+                        <div class="link-name">Homelab / 服务</div>
+                        <div class="link-desc">家庭实验室面板</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                </a>
+
+                <!-- 链接 4: 工具箱 (预留示例) -->
+                <a href="#" target="_blank" class="link-card">
+                    <div class="icon-box icon-tools">
+                        <i class="fa-solid fa-toolbox"></i>
+                    </div>
+                    <div class="link-info">
+                        <div class="link-name">在线工具箱</div>
+                        <div class="link-desc">常用效率工具</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                </a>
+
+                <!-- 预留链接 5 -->
+                <a href="#" target="_blank" class="link-card">
+                    <div class="icon-box icon-plus">
+                        <i class="fa-solid fa-bookmark"></i>
+                    </div>
+                    <div class="link-info">
+                        <div class="link-name">预留链接 01</div>
+                        <div class="link-desc">点击配置新站点</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                </a>
+
+                <!-- 预留链接 6 -->
+                <a href="#" target="_blank" class="link-card">
+                    <div class="icon-box icon-plus">
+                        <i class="fa-solid fa-link"></i>
+                    </div>
+                    <div class="link-info">
+                        <div class="link-name">预留链接 02</div>
+                        <div class="link-desc">点击配置新站点</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                </a>
+            </div>
         </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <span>&copy; <span id="year"></span> Darthz's Repo</span>
+            <span>Powered by GitHub Pages</span>
+        </footer>
     </div>
 
+    <!-- Live Clock Script & Search Functionality -->
+    <script>
+        function updateClock() {
+            const now = new Date();
+            
+            // Hours, Minutes, Seconds
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            document.getElementById('clock').innerHTML = `${hours}:${minutes}<span class="seconds">:${seconds}</span>`;
+
+            // Date with custom formatting
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const date = String(now.getDate()).padStart(2, '0');
+            const weekDays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            const dayName = weekDays[now.getDay()];
+
+            document.getElementById('date').innerText = `${year}年${month}月${date}日 ${dayName}`;
+            document.getElementById('year').innerText = year;
+        }
+
+        // Initialize clock and update every second
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Search bar enter key trigger
+        function handleSearch(event) {
+            if (event.key === 'Enter') {
+                const query = document.getElementById('searchInput').value.trim();
+                if (query) {
+                    if (query.startsWith('http://') || query.startsWith('https://')) {
+                        window.open(query, '_blank');
+                    } else {
+                        window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>
