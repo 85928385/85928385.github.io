@@ -124,37 +124,7 @@
             background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 70%, #38bdf8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
             text-shadow: 0 10px 20px rgba(99, 102, 241, 0.15);
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 20px;
-            font-size: 12px;
-            color: #a5b4fc;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background-color: #22c55e;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #22c55e;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
         }
 
         /* Clock & Date Widget Card */
@@ -336,8 +306,8 @@
 
         /* Unique Accent Colors for Icons */
         .icon-github { background: rgba(255, 255, 255, 0.15); color: #fff; }
-        .icon-blog { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); }
-        .icon-server { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
+        .icon-apple { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); }
+        .icon-microchip { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
         .icon-tools { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
         .icon-plus { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
 
@@ -433,10 +403,6 @@
         <!-- Header -->
         <header class="header">
             <h1 class="title">Darthz's Repo</h1>
-            <div class="badge">
-                <span class="status-dot"></span>
-                <span>System Online</span>
-            </div>
         </header>
 
         <!-- Time & Date Widget -->
@@ -474,10 +440,10 @@
                     <i class="fa-solid fa-chevron-right arrow-icon"></i>
                 </a>
 
-                <!-- 预留链接 2 -->
+                <!-- 链接 2: iOS12-JB -->
                 <a href="https://85928385.github.io/totally-not-spyware-v2/" target="_blank" class="link-card">
-                    <div class="icon-box icon-blog">
-                        <i class="fa-solid fa-newspaper"></i>
+                    <div class="icon-box icon-apple">
+                        <i class="fa-brands fa-apple"></i>
                     </div>
                     <div class="link-info">
                         <div class="link-name">iOS12-JB</div>
@@ -486,10 +452,10 @@
                     <i class="fa-solid fa-chevron-right arrow-icon"></i>
                 </a>
 
-                <!-- 预留链接 3 -->
+                <!-- 链接 3: pixl.js-web -->
                 <a href="https://85928385.github.io/pixl.js-web/" target="_blank" class="link-card">
-                    <div class="icon-box icon-server">
-                        <i class="fa-solid fa-server"></i>
+                    <div class="icon-box icon-microchip">
+                        <i class="fa-solid fa-microchip"></i>
                     </div>
                     <div class="link-info">
                         <div class="link-name">pixl.js-web</div>
