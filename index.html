@@ -48,6 +48,17 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* Interactive Particle Canvas */
+        #particles-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
         /* Ambient background glow elements */
         .ambient-orb {
             position: absolute;
@@ -226,22 +237,6 @@
         }
 
         /* Nav Section / Links Grid */
-        .section-title {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-sub);
-            font-weight: 600;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .section-title i {
-            color: var(--accent-purple);
-        }
-
         .links-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -396,6 +391,9 @@
 </head>
 <body>
 
+    <!-- Particle Layer Canvas -->
+    <canvas id="particles-canvas"></canvas>
+
     <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
 
@@ -409,7 +407,7 @@
         <div class="time-widget">
             <div class="clock-display" id="clock">00:00<span class="seconds">:00</span></div>
             <div class="date-display">
-                <i class="fa-regular fa-calendar-days"></i>
+                <i id="weather-icon" class="fa-regular fa-calendar-days"></i>
                 <span id="date">2026年08月17日 星期一</span>
             </div>
         </div>
@@ -422,11 +420,6 @@
 
         <!-- Links Grid -->
         <main>
-            <div class="section-title">
-                <i class="fa-solid fa-compass"></i>
-                <span>快捷导航与资源</span>
-            </div>
-            
             <div class="links-grid">
                 <!-- 链接 1: GitHub -->
                 <a href="https://github.com" target="_blank" class="link-card">
@@ -509,19 +502,17 @@
         </footer>
     </div>
 
-    <!-- Live Clock Script & Search Functionality -->
     <script>
+        // --- Clock & Time Ambient Themes ---
         function updateClock() {
             const now = new Date();
             
-            // Hours, Minutes, Seconds
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
             
             document.getElementById('clock').innerHTML = `${hours}:${minutes}<span class="seconds">:${seconds}</span>`;
 
-            // Date with custom formatting
             const year = now.getFullYear();
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const date = String(now.getDate()).padStart(2, '0');
@@ -530,13 +521,25 @@
 
             document.getElementById('date').innerText = `${year}年${month}月${date}日 ${dayName}`;
             document.getElementById('year').innerText = year;
+
+            // Time-based dynamic theme glow & ambient icon adjustment
+            const hour = now.getHours();
+            const weatherIcon = document.getElementById('weather-icon');
+            if (hour >= 6 && hour < 18) {
+                // Daytime ambient icon & accent shift
+                weatherIcon.className = "fa-solid fa-sun";
+                document.documentElement.style.setProperty('--accent-cyan', '#38bdf8');
+            } else {
+                // Nighttime ambient icon & accent shift
+                weatherIcon.className = "fa-solid fa-moon";
+                document.documentElement.style.setProperty('--accent-cyan', '#818cf8');
+            }
         }
 
-        // Initialize clock and update every second
         updateClock();
         setInterval(updateClock, 1000);
 
-        // Search bar enter key trigger
+        // --- Search functionality ---
         function handleSearch(event) {
             if (event.key === 'Enter') {
                 const query = document.getElementById('searchInput').value.trim();
@@ -549,6 +552,88 @@
                 }
             }
         }
+
+        // --- Mouse Interaction Micro Particle Canvas Effect ---
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const mouse = { x: null, y: null, radius: 120 };
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(165, 180, 252, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+                // Interactive repulsion on mouse hover
+                if (mouse.x !== null && mouse.y !== null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius) {
+                        let forceDirectionX = dx / distance;
+                        let forceDirectionY = dy / distance;
+                        let force = (mouse.radius - distance) / mouse.radius;
+                        this.x -= forceDirectionX * force * 3;
+                        this.y -= forceDirectionY * force * 3;
+                    }
+                }
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.floor((canvas.width * canvas.height) / 18000);
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
     </script>
 </body>
 </html>
